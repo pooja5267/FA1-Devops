@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FA1</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .box {
+            width: 450px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        #result {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+
+        <h1>Formative Assessment 1</h1>
+
+        <p>Terraform & Docker Deployment</p>
+
+        <p>
+            Environment:
+            <b id="environment">Loading...</b>
+        </p>
+
+        <p>Frontend is running successfully.</p>
+
+        <button onclick="checkBackend()">
+            Check Backend
+        </button>
+
+        <p id="result"></p>
+
+        <hr>
+
+        <p>
+            Frontend: Nginx<br>
+            Backend: Flask<br>
+            Infrastructure: Terraform
+        </p>
+
+    </div>
+
+    <script>
+
+        let port = window.location.port;
+        let environment;
+        let backendPort;
+
+        if (port == "8081") {
+            environment = "QA";
+            backendPort = "5001";
+        }
+        else if (port == "8082") {
+            environment = "UAT";
+            backendPort = "5002";
+        }
+        else {
+            environment = "PROD";
+            backendPort = "5003";
+        }
+
+        document.getElementById("environment").innerText = environment;
+
+        function checkBackend() {
+
+            fetch("http://localhost:" + backendPort + "/api")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("result").innerText =
+                        "✓ " + data.message;
+                })
+                .catch(error => {
+                    document.getElementById("result").innerText =
+                        "✗ Backend connection failed";
+                });
+        }
+
+    </script>
+
+</body>
+</html>
