@@ -1,0 +1,33 @@
+
+name: FA1 DevOps CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install backend dependencies
+        run: pip install -r docker/backend/requirements.txt
+
+      - name: Run backend tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Build backend Docker image
+        run: docker build -t fa1-backend ./docker/backend
+
+      - name: Build frontend Docker image
+        run: docker build -t fa1-frontend ./docker/frontend
