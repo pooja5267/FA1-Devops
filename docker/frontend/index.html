@@ -62,24 +62,11 @@
 
     <script>
 
-        let port = window.location.port;
-        let environment;
-        let backendPort;
+        let environment = "Local";
+	let backendPort = "5001";
 
-        if (port == "8081") {
-            environment = "QA";
-            backendPort = "5001";
-        }
-        else if (port == "8082") {
-            environment = "UAT";
-            backendPort = "5002";
-        }
-        else {
-            environment = "PROD";
-            backendPort = "5003";
-        }
+	document.getElementById("environment").innerText = environment;
 
-        document.getElementById("environment").innerText = environment;
 
         function checkBackend() {
 
